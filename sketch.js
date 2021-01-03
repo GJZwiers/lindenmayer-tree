@@ -1,7 +1,3 @@
-
-const snowAxiom = "F--F--F";
-const snowSentence = snowAxiom;
-
 const ltrees = [];
 const snowlines = [];
 const linesize = snowlines.length;
@@ -13,12 +9,12 @@ class Rule {
     }
 }
 
-const treerule = new Rule('F', "FF+[+F-F-F]-[-F+F+F]");
-const snowrule = new Rule('F', "F+F--F+F");
-
-const maker = new LTreeGenerator('F', treerule, 4);
-
 function setup() {
+    const treerule = new Rule('F', "FF+[+F-F-F]-[-F+F+F]");
+    const snowrule = new Rule('F', "F+F--F+F");
+    const maker = new LTreeGenerator('F', treerule, 4);
+    const flakeMaker = new SnowFlakeMaker("F--F--F", snowrule, 2);
+
     createCanvas(640, 640);
     translate(width / 3, height);
 
@@ -38,11 +34,30 @@ function setup() {
         }
         tree.endShape();
     }
+
+    flake = createGraphics(640, 640);
+    flake.fill(color(255, 195));
+    flake.stroke(color(255));
+    flake.strokeWeight(1);
+    flake.translate(width / 3, height / 2);
+
+    flakeMaker.generate();
+    //for (let i = 0; i < 6; i++) {
+        let snowVerts = flakeMaker.makeFlake(1.2);
+        flake.beginShape();
+        console.log(snowVerts);
+        for (let i = 0; i < snowVerts.length; i++) {
+            flake.vertex(snowVerts[i].x, snowVerts[i].y);
+        }
+        flake.endShape();
+    //}
+
 }
 
 function draw() {
     background(0);
     image(tree, 0, 0);
+    image(flake, 0, 0);
 }
 
 

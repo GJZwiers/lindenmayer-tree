@@ -16,8 +16,8 @@ class LTreeGenerator {
 
     constructor(axiom, rule, time) {
         this.sentence = axiom;
-        this.time = time;
         this.rule = rule;
+        this.time = time;
     }
 
     generate() {
@@ -92,6 +92,5 @@ class LTreeGenerator {
         // console.log(this.vertices);
         return this.vertices;
     }
-
 
 }
