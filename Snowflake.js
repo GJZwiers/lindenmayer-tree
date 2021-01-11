@@ -1,11 +1,10 @@
-
 class FractalSnowFlake {
     constructor(image) {
         this.image = image;
-        this.limitVel = random(0.5, 0.9);
+        this.limitVel = random(0.9, 1.6);
         this.alpha = random(180, 240);
-        this.r = floor(random(6));
-        this.pos = createVector(random(width), random(-11, 300));
+        this.r = floor(random(2, 8));
+        this.pos = createVector(random(width), random(-50, 640));
         this.vel = createVector(0, this.limitVel);
         this.acc = createVector(0, 0);
         this.index = int(map(this.vel.y, 0.5, 3.2, 0, 6));
@@ -13,9 +12,9 @@ class FractalSnowFlake {
 
     show() {
         push();
-        translate(this.pos.x, this.pos.y);
+        //translate(this.pos.x, this.pos.y);
         //image(this.image, this.pos.x, this.pos.y);
-        ellipse(this.pos.x, this.pos.y, 8, 8);
+        ellipse(this.pos.x, this.pos.y, this.r, this.r);
         pop();
     }
 
@@ -33,7 +32,7 @@ class FractalSnowFlake {
             this.pos.x = random(-40, -10);
         }
         if (this.pos.y > height) {
-            this.pos.y = random(-1, -100);
+            this.pos.y = random(0, 1);
         }
     }
 
