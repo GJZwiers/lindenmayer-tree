@@ -1,10 +1,3 @@
-class State {
-    constructor(pos, angle) {
-        this.pos = pos;
-        this.angle = angle;
-    }
-}
-
 class LTreeGenerator {
     vertices = [];
     branchLength;
@@ -40,7 +33,7 @@ class LTreeGenerator {
         return nextSentence;
     }
 
-    makeTree(angle) {
+    make(angle) {
         angle = radians(angle);
         this.vertices.push([]);
         let currentPos = createVector(0, 0);
@@ -59,8 +52,9 @@ class LTreeGenerator {
             } else if (current === '-') {
                 branchAngle += angle;
             } else if (current === '[') {
-                states.push(new State(
-                    createVector(currentPos.x, currentPos.y), branchAngle));
+                states.push({
+                    pos: createVector(currentPos.x, currentPos.y),
+                    angle: branchAngle });
             } else { // if (current === ']')
                 const s = states[states.length-1];
                 currentPos = createVector(s.pos.x, s.pos.y);
@@ -75,3 +69,5 @@ class LTreeGenerator {
         return this.vertices;
     }
 }
+
+

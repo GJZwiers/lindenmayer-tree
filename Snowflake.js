@@ -12,8 +12,6 @@ class FractalSnowFlake {
 
     show() {
         push();
-        //translate(this.pos.x, this.pos.y);
-        //image(this.image, this.pos.x, this.pos.y);
         ellipse(this.pos.x, this.pos.y, this.r, this.r);
         pop();
     }
@@ -67,7 +65,7 @@ class SnowFlakeMaker {
         return nextSentence;
     }
 
-    makeFlake(size) {
+    make(size) {
         let currentPos = createVector(0, 0);
         let angle = 0;
         let newX = 0;

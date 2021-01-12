@@ -1,29 +1,23 @@
-let snowflakes = [];
 let distantFlakes = [];
 let nearFlakes = [];
 let slider;
 
-class Rule {
-    constructor(a, b) {
-        this.a = a;
-        this.b = b;
-    }
-}
-
 function setup() {
-    const treerule = new Rule('F', "FF+[+F-F-F]-[-F+F+F]");
-    const snowrule = new Rule('F', "F+F--F+F");
+    const axiom = 'F';
+    const treerule = new Rule(axiom, "FF+[+F-F-F]-[-F+F+F]");
     const branchLength = 65;
-    const maker = new LTreeGenerator('F', treerule, 4, branchLength);
-    const flakeMaker = new SnowFlakeMaker("F--F--F", snowrule, 4);
+    const cycles = 4;
+    const treeMaker = new LTreeGenerator(axiom, treerule, cycles, branchLength);
+
+    const snowrule = new Rule(axiom, "F+F--F+F");
+    const flakeMaker = new SnowFlakeMaker("F--F--F", snowrule, cycles);
 
     createCanvas(640, 640);
-    //translate(width/3, height);
 
     tree = createShape();
 
-    maker.generate();
-    let verts = maker.makeTree(random(16, 32));
+    treeMaker.generate();
+    let verts = treeMaker.make(random(16, 32));
 
     for (let i = 0; i < verts.length; i++) {
         tree.beginShape();
@@ -33,14 +27,14 @@ function setup() {
         tree.endShape();
     }
 
-    flake = createGraphics(640, 640);
+    flake = createGraphics(150, 150);
     flake.translate(width/3, height);
 
     flakeMaker.generate();
-    let snowVerts = flakeMaker.makeFlake(1.2);
+    let snowVerts = flakeMaker.make(1.2);
     
     flake.beginShape();
-    flake.fill(color(255, 195));    // noFill
+    flake.fill(color(255, 195));
     flake.noStroke();
     for (let i = 0; i < snowVerts.length; i++) {
         flake.vertex(snowVerts[i].x, snowVerts[i].y);
@@ -54,16 +48,12 @@ function setup() {
         } else {
             distantFlakes.push(fl);
         }
-        //snowflakes.push();
     }
 
     gravity = createVector(0, 0.2);
-    breeze = createVector(0.2, 0);
+    wind = createVector(0.2, 0);
 
     slider = createSlider(1, 1000, 150);
-
-    console.log(nearFlakes.length);
-    console.log(distantFlakes.length);
 }
 
 function createShape(options) {
@@ -81,25 +71,24 @@ function draw() {
     let val = slider.value();
     let max = (val > distantFlakes.length) ? distantFlakes.length : val;
     let max2 = (val > nearFlakes.length) ? nearFlakes.length : val;
-    //let max = map(val, 1, val / 2, 1, distantFlakes.length);    // 500, 1, 250, 1, 709
-    //console.log(max);
+
     for (let i = 0; i < max; i++) {
         distantFlakes[i].applyForce(gravity);
-        distantFlakes[i].applyForce(breeze);
+        distantFlakes[i].applyForce(wind);
         distantFlakes[i].update();
         distantFlakes[i].show();
     }
+    
     fill(255, 255, 255);
     rect(0, height - 5, 640, 6);
     image(tree, 0, 0);
     
     for (let i = 0; i < max2; i++) {
         nearFlakes[i].applyForce(gravity);
-        nearFlakes[i].applyForce(breeze);
+        nearFlakes[i].applyForce(wind);
         nearFlakes[i].update();
         nearFlakes[i].show();
     }
-
 }
 
 
